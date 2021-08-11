@@ -31,7 +31,7 @@ function uojTextEncode($str, $config = array()) {
 		'allow_CR' => false,
 		'html_escape' => false
 	]);
-	
+
 	$allow = array();
 	for ($c = 32; $c <= 126; $c++) {
 		$allow[chr($c)] = true;
@@ -39,11 +39,11 @@ function uojTextEncode($str, $config = array()) {
 	$allow["\n"] = true;
 	$allow[" "] = true;
 	$allow["\t"] = true;
-	
+
 	if ($config['allow_CR']) {
 		$allow["\r"] = true;
 	}
-	
+
 	$len = strlen($str);
 	$ok = true;
 	for ($i = 0; $i < $len; $i++) {
@@ -115,6 +115,46 @@ function base64url_decode($data) {
 	return base64_decode(str_pad(strtr($data, '-_', '+/'), strlen($data) % 4, '=', STR_PAD_RIGHT));
 }
 
+function base32_decode($b32) {
+	$lut = array("A" => 0,       "B" => 1,
+		"C" => 2,       "D" => 3,
+		"E" => 4,       "F" => 5,
+		"G" => 6,       "H" => 7,
+		"I" => 8,       "J" => 9,
+		"K" => 10,      "L" => 11,
+		"M" => 12,      "N" => 13,
+		"O" => 14,      "P" => 15,
+		"Q" => 16,      "R" => 17,
+		"S" => 18,      "T" => 19,
+		"U" => 20,      "V" => 21,
+		"W" => 22,      "X" => 23,
+		"Y" => 24,      "Z" => 25,
+		"2" => 26,      "3" => 27,
+		"4" => 28,      "5" => 29,
+		"6" => 30,      "7" => 31
+	);
+
+	$b32    = strtoupper($b32);
+	$l      = strlen($b32);
+	$n      = 0;
+	$j      = 0;
+	$binary = "";
+
+	for ($i = 0; $i < $l; $i++) {
+
+		$n = $n << 5;
+		$n = $n + $lut[$b32[$i]];
+		$j = $j + 5;
+
+		if ($j >= 8) {
+			$j = $j - 8;
+			$binary .= chr(($n & (0xFF << $j)) >> $j);
+		}
+	}
+
+	return $binary;
+}
+
 function blog_name_encode($name) {
 	$name = str_replace('-', '_', $name);
 	if (!strStartWith($name, '_') && !strEndWith($name, '_')) {
@@ -134,15 +174,15 @@ function isSuperUser($user) {
 }
 function getProblemExtraConfig($problem) {
 	$extra_config = json_decode($problem['extra_config'], true);
-	
+
 	$default_extra_config = array(
 		'view_content_type' => 'ALL',
 		'view_all_details_type' => 'ALL',
 		'view_details_type' => 'ALL'
 	);
-	
+
 	mergeConfig($extra_config, $default_extra_config);
-	
+
 	return $extra_config;
 }
 function getProblemSubmissionRequirement($problem) {

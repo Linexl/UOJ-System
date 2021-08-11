@@ -106,6 +106,10 @@ function queryBlogComment($id) {
 	return DB::selectFirst("select * from blogs_comments where id='$id'", MYSQLI_ASSOC);
 }
 
+function queryTotp($username) {
+	return DB::selectFirst("select * from user_totp where username='$username'", MYSQLI_ASSOC);
+}
+
 function isProblemVisibleToUser($problem, $user) {
 	return !$problem['is_hidden'] || hasProblemPermission($user, $problem);
 }

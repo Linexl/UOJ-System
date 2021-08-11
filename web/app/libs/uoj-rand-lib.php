@@ -13,6 +13,15 @@ function uojRandString($len, $charset = '0123456789abcdefghijklmnopqrstuvwxyzABC
 	return $str;
 }
 
+function uojRandVCode($len, $charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+	$n_chars = strlen($charset);
+	$str = '';
+	for ($i = 0; $i < $len; $i++) {
+		$str .= $charset[uojRand(0, $n_chars - 1)];
+	}
+	return $str;
+}
+
 function uojRandAvaiableFileName($dir) {
 	do {
 		$fileName = $dir . uojRandString(20);
@@ -30,8 +39,4 @@ function uojRandAvaiableSubmissionFileName() {
 		system("mkdir ".UOJContext::storagePath()."/submission/$num");
 	}
 	return uojRandAvaiableFileName("/submission/$num/");
-}
-
-function uojRandAvaiablePasteFileName() {
-	return uojRandAvaiableFileName('/paste/');
 }
