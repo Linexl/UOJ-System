@@ -107,7 +107,7 @@ function queryBlogComment($id) {
 }
 
 function queryTotp($username) {
-	return DB::selectFirst("select * from user_totp where username='$username'", MYSQLI_ASSOC);
+    return DB::selectFirst("select * from user_totp where username='$username'", MYSQLI_ASSOC);
 }
 
 function isProblemVisibleToUser($problem, $user) {

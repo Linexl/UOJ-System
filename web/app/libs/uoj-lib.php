@@ -2,7 +2,10 @@
 	error_reporting(E_ALL ^ E_NOTICE);
 	
 	spl_autoload_register(function($class_name) {
-		require_once $_SERVER['DOCUMENT_ROOT'] . '/app/models/' . $class_name . '.php';
+		if($class_name=='lbuchs\WebAuthn\Binary\ByteBuffer'){
+			require_once $_SERVER['DOCUMENT_ROOT'].'/app/vendor/webauthn/Binary/ByteBuffer.php';
+		}
+		else require_once $_SERVER['DOCUMENT_ROOT'] . '/app/models/' . $class_name . '.php';
 	});
 	
 	function requireLib($name) { // html lib
